@@ -53,13 +53,17 @@ IPs across responses confirm per-request load balancing is working.
 | `01-autoscaling/security.tf` | Security lists — public port 80, private from LB subnet only |
 | `01-autoscaling/scripts/userdata.sh` | cloud-init: installs apache2, fetches OCI IMDSv2, writes HTML + /plain |
 
-## OCI Quirks (all baked into userdata.sh)
+## OCI Quirks (all baked into userdata.sh or Terraform)
 
 1. **Network timing:** OCI fires cloud-init before internet routing is ready.
    Script loops on HTTP connectivity to `yum.oracle.com` before running dnf.
 2. **Host firewall:** Oracle Linux 9 ships with firewalld active. Script runs
    `firewall-cmd --permanent --add-service=http && firewall-cmd --reload`
    after httpd installs — the security list alone is not enough.
+3. **Multiple repo endpoints need connectivity checks:** dnf hits several
+   endpoints including `yum.us-ashburn-1.oci.oraclecloud.com`. The network
+   wait loop checks both `yum.oracle.com` and the OCI regional mirror to
+   ensure all repos are reachable before running dnf.
 
 ## Auth Pattern
 

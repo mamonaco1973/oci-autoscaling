@@ -18,7 +18,17 @@ done
 echo "NOTE: Network ready."
 
 echo "NOTE: Installing httpd..."
-dnf install -y httpd
+# Retry dnf up to 5 minutes — repo endpoints can be transiently unreachable
+# at early boot even after the basic connectivity check passes
+for attempt in $(seq 1 10); do
+  dnf install -y httpd && break
+  if [ "${attempt}" -eq 10 ]; then
+    echo "ERROR: dnf failed after 10 attempts, giving up."
+    exit 1
+  fi
+  echo "NOTE: dnf attempt ${attempt} failed, retrying in 30s..."
+  sleep 30
+done
 
 # ------------------------------------------------------------------------------
 # Fetch Instance Metadata
