@@ -54,7 +54,20 @@ resource "oci_core_security_list" "private" {
     }
   }
 
-  # Unrestricted egress allows instances to reach apt repos and OCI APIs
+  # Bastion service tunnels SSH from within OCI infrastructure — source is
+  # the VCN CIDR rather than the public subnet only, as OCI routes bastion
+  # traffic internally before it reaches the instance
+  ingress_security_rules {
+    protocol  = "6" # TCP
+    source    = "10.0.0.0/24"
+    stateless = false
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
+  # Unrestricted egress allows instances to reach yum repos and OCI APIs
   # through the NAT gateway — no specific destination needs to be whitelisted
   egress_security_rules {
     protocol    = "all"

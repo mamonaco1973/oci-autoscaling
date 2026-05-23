@@ -7,3 +7,8 @@ output "lb_ocid" {
   description = "Load balancer OCID — used by validate.sh to check backend health"
   value       = oci_load_balancer_load_balancer.main.id
 }
+
+output "bastion_id" {
+  description = "Bastion OCID — used by connect.sh to create SSH tunnel sessions"
+  value       = oci_bastion_bastion.main.id
+}
