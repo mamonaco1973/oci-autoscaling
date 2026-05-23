@@ -52,9 +52,9 @@ while true; do
     exit 1
   fi
 
-  echo "NOTE: Backend set status: ${STATUS} — retrying in 15s (${ELAPSED}s elapsed)..."
-  sleep 15
-  ELAPSED=$((ELAPSED + 15))
+  echo "NOTE: Backend set status: ${STATUS} — retrying in 30s (${ELAPSED}s elapsed)..."
+  sleep 30
+  ELAPSED=$((ELAPSED + 30))
 done
 
 # ------------------------------------------------------------------------------
