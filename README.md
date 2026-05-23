@@ -62,7 +62,7 @@ When the deployment completes, the following resources are created:
 
 - **Instance Pool:**
   - Instance Configuration: VM.Standard.A1.Flex (Ampere ARM, 1 OCPU, 4 GB), Oracle Linux 9, httpd with OCI IMDSv2 metadata page
-  - Instance Pool: min 1, initial 4, max 6 — spread across AD-1 and AD-2
+  - Instance Pool: min 1, initial 3, max 6 — spread across AD-1 and AD-2
   - Scale-out rule: +1 instance when CPU > 60%
   - Scale-in rule: -1 instance when CPU < 60%
   - 300-second cool-down between scaling actions
